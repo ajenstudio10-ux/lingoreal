@@ -303,9 +303,11 @@ useEffect(() => {
       }
 
       const content = await zip.generateAsync({ type: 'blob' });
-      saveAs(content, `Audios_LingoReal_${nombreIdioma}.zip`);
+      saveAs(content, `Audios_Lingo4Real_${nombreIdioma}.zip`);
+
 
     } catch (err) {
+      
       console.error(err);
       alert('Hubo un error al empaquetar los audios.');
     }
@@ -357,7 +359,7 @@ useEffect(() => {
         {/* Encabezado e indicador de descargas */}
         <div className={`p-8 rounded-2xl border mb-8 shadow-sm ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
           <span className={`text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider ${darkMode ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-emerald-100 text-emerald-800'}`}>
-            Libro Digital LingoReal
+            Libro Digital Lingo4Real
           </span>
           <h1 className={`text-3xl md:text-4xl font-extrabold mt-3 mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
             Libro de {nombreIdioma}
@@ -550,7 +552,7 @@ useEffect(() => {
             </button>
             <div className="text-center mb-6">
               <span className="text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider bg-emerald-500/20 text-emerald-400">
-                LingoReal 🌍
+                Lingo4Real 🌍
               </span>
               <h2 className={`text-2xl font-extrabold mt-3 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
                 Desbloquear Curso de {nombreIdioma}
@@ -633,7 +635,7 @@ useEffect(() => {
                 Iniciar Sesión
               </h2>
               <p className={`text-sm mt-1 ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-                Ingresa tu correo para recuperar tus compras de LingoReal.
+                Ingresa tu correo para recuperar tus compras de Lingo4Real.
               </p>
             </div>
 

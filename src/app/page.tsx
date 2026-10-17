@@ -176,9 +176,10 @@ export default function Home() {
                 width={40} 
                 height={40} 
                 className="h-10 w-auto object-contain"
+
               />
 
-            <span className="font-extrabold text-xl tracking-tight">LingoReal</span>
+            <span className="font-extrabold text-xl tracking-tight">Lingo4Real</span>
           </div>
           <div className="flex items-center gap-4">
             <span className={`text-xs font-semibold px-3 py-1 rounded-full hidden sm:inline-block ${darkMode ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-emerald-100 text-emerald-800'}`}>
@@ -317,10 +318,10 @@ export default function Home() {
               Porque una cosa es aprender un idioma en un libro… y otra muy diferente es escucharlo, entenderlo y utilizarlo en situaciones reales.
             </p>
             <p className="text-xl font-extrabold text-white pt-2">
-              De esta experiencia nace LingoReal.
+              De esta experiencia nace Lingo4Real.
             </p>
             <p>
-              LingoReal es la versión digital de nuestra propuesta de expresiones reales, desarrollada a partir de la experiencia de Lingolime y pensada para que los estudiantes puedan descubrir las expresiones que forman parte de la comunicación cotidiana.
+              Lingo4Real es la versión digital de nuestra propuesta de expresiones reales, desarrollada a partir de la experiencia de Lingolime y pensada para que los estudiantes puedan descubrir las expresiones que forman parte de la comunicación cotidiana.
             </p>
           </div>
 
@@ -333,7 +334,7 @@ export default function Home() {
 
           <div className="text-center md:text-left font-bold text-emerald-300 italic text-lg space-y-1">
             <p>Lingolime nos enseña idiomas.</p>
-            <p className="text-white">LingoReal a vivirlos.</p>
+            <p className="text-white">Lingo4Real a vivirlos.</p>
           </div>
         </div>
 
@@ -433,7 +434,7 @@ export default function Home() {
             </button>
             <div className="text-center mb-6">
               <span className="text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider bg-emerald-500/20 text-emerald-400">
-                Paquete Ahorro LingoReal 📦
+                Paquete Ahorro Lingo4Real 📦
               </span>
               <h2 className={`text-2xl font-extrabold mt-3 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
                 {tipoPaqueteElegido === 2 ? 'Selecciona tus 2 Idiomas' : 'Paquete Total 3 Idiomas'}
@@ -538,7 +539,7 @@ export default function Home() {
       {/* Footer */}
       <footer className={`border-t py-8 px-6 text-center text-xs transition-colors duration-300 ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-400' : 'bg-white border-slate-200 text-slate-500'}`}>
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p>© {new Date().getFullYear()} LingoReal 🌍. Todos los derechos reservados.</p>
+          <p>© {new Date().getFullYear()} Lingo4Real 🌍. Todos los derechos reservados.</p>
           <div className="flex gap-6 items-center">
             <Link href="/privacidad" className="hover:text-emerald-500 transition">Aviso de Privacidad</Link>
             <Link href="/terminos" className="hover:text-emerald-500 transition">Términos y Condiciones</Link>
