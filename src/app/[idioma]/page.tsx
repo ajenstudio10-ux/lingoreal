@@ -67,40 +67,55 @@ useEffect(() => {
     }
 
     // Capturar retorno exitoso de PayPal de forma segura
+// Capturar retorno exitoso de PayPal y ejecutar la CAPTURA
     const queryParams = new URLSearchParams(window.location.search);
     if (queryParams.get('success') === 'true') {
       const email = queryParams.get('email');
       const version = queryParams.get('version');
+      const token = queryParams.get('token'); // ID de la orden enviado por PayPal
 
-      if (email && version) {
-        // 1. Limpiamos la URL INMEDIATAMENTE para evitar duplicados en Strict Mode o al recargar
+      if (email && version && token) {
+        // Limpiamos la URL para evitar ejecuciones dobles
         window.history.replaceState({}, document.title, window.location.pathname);
 
-        const registrarPagoExitoso = async () => {
-          const { error } = await supabase.from('subscribers').insert([
-            {
-              email: email,
-              language: idiomaActual,
-              version: version,
-            }
-          ]);
+        const procesarCapturaYRegistro = async () => {
+          try {
+            // 1. Ejecutar la captura del pago en PayPal
+            const captureRes = await fetch('/api/paypal-checkout', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ token }),
+            });
 
-          if (!error) {
+            const captureData = await captureRes.json();
+
+            if (!captureRes.ok || !captureData.success) {
+              throw new Error(captureData.error || 'No se pudo completar el cobro con PayPal.');
+            }
+
+            // 2. Si PayPal confirmó la captura exitosa, guardamos en Supabase
+            const { error } = await supabase.from('subscribers').insert([
+              {
+                email: email,
+                language: idiomaActual,
+                version: version,
+              }
+            ]);
+
             localStorage.setItem(`lingoreal_correo_${idiomaActual}`, email);
             localStorage.setItem(`lingoreal_version_${idiomaActual}`, version);
             setCorreoUsuario(email);
             setVersionComprada(version);
-            alert(`¡Pago y registro exitoso con PayPal! Ya tienes acceso a ${nombreIdioma}.`);
-          } else {
-            // Si ya existía o hubo algún detalle, respaldamos el acceso en localStorage
-            localStorage.setItem(`lingoreal_correo_${idiomaActual}`, email);
-            localStorage.setItem(`lingoreal_version_${idiomaActual}`, version);
-            setCorreoUsuario(email);
-            setVersionComprada(version);
+
+            alert(`¡Pago de $${version === 'pro' ? '199' : '139'} MXN capturado con éxito! Ya tienes acceso a ${nombreIdioma}.`);
+
+          } catch (err: any) {
+            console.error('Error procesando pago:', err);
+            alert(`Hubo un problema al confirmar tu cobro: ${err.message}`);
           }
         };
 
-        registrarPagoExitoso();
+        procesarCapturaYRegistro();
       }
     }
 

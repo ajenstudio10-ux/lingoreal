@@ -20,6 +20,7 @@ async function getPayPalAccessToken() {
   return data.access_token;
 }
 
+// 1. CREAR LA ORDEN
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
 
     const origin = request.headers.get('origin');
 
-    // Construimos la URL de retorno mandando los datos necesarios para registrar al usuario despues
+    // Construimos la URL de retorno mandando los datos necesarios para capturar después
     const returnUrl = `${origin}/${language.startsWith('paquete') ? '' : language}?success=true&email=${encodeURIComponent(email)}&version=${encodeURIComponent(version)}&lang=${encodeURIComponent(language)}`;
 
     const response = await fetch(`${PAYPAL_API}/v2/checkout/orders`, {
@@ -71,6 +72,40 @@ export async function POST(request: Request) {
     return NextResponse.json({ url: approvalUrl });
   } catch (err: any) {
     console.error('Error en PayPal Checkout:', err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
+
+// 2. CAPTURAR EL PAGO (MÉTODO PUT)
+export async function PUT(request: Request) {
+  try {
+    const { token } = await request.json(); // "token" es el orderID que manda PayPal
+
+    if (!token) {
+      return NextResponse.json({ error: 'Falta el token de la orden' }, { status: 400 });
+    }
+
+    const accessToken = await getPayPalAccessToken();
+
+    // Petición crítica: Capturar el cobro en los servidores de PayPal
+    const response = await fetch(`${PAYPAL_API}/v2/checkout/orders/${token}/capture`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const captureData = await response.json();
+
+    if (!response.ok) {
+      console.error('Error al capturar orden PayPal:', captureData);
+      throw new Error(captureData.message || 'Error al capturar la orden en PayPal');
+    }
+
+    return NextResponse.json({ success: true, details: captureData });
+  } catch (err: any) {
+    console.error('Error en Captura de PayPal:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
